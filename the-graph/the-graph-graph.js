@@ -205,19 +205,18 @@ module.exports.register = function (context) {
         event = event.gesture.srcEvent; // unpack hammer.js gesture event 
       }
 
-      var x = event.x || event.clientX || 0;
-      var y = event.y || event.clientY || 0;
+      var position = TheGraph.library.getEventPosition(event);
+
       if (event.touches && event.touches.length) {
-        x = event.touches[0].clientX;
-        y = event.touches[0].clientY;
+        position.x = event.touches[0].clientX;
+        position.y = event.touches[0].clientY;
       }
 
-      x -= this.props.app.state.offsetX || 0;
-      y -= this.props.app.state.offsetY || 0;
+      // The scale is used here to adapt the edgePreview position if a scale change occurs (wheel scroll)
       var scale = this.props.app.state.scale;
       this.setState({
-        edgePreviewX: (x - this.props.app.state.x) / scale,
-        edgePreviewY: (y - this.props.app.state.y) / scale
+        edgePreviewX: (position.x - this.props.app.state.x) / scale,
+        edgePreviewY: (position.y - this.props.app.state.y) / scale
       });
       this.markDirty();
     },

@@ -86,7 +86,7 @@
       connect: {
         server: {
           options: {
-            port: 3000,
+            port: 3030,
             hostname: '*', // Allow connection from mobile
             livereload: true
           }

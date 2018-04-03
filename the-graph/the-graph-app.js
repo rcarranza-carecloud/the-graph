@@ -204,9 +204,12 @@ module.exports.register = function (context) {
       }
 
       // Safari is wheelDeltaY
+      var position = TheGraph.library.getEventPosition(event);
+
       this.zoomFactor += event.deltaY ? event.deltaY : 0-event.wheelDeltaY;
-      this.zoomX = event.clientX;
-      this.zoomY = event.clientY;
+      this.zoomX = position.x;
+      this.zoomY = position.y;
+
       requestAnimationFrame(this.scheduleWheelZoom);
     },
     scheduleWheelZoom: function () {
@@ -496,19 +499,19 @@ module.exports.register = function (context) {
       if (event.preventTap) { event.preventTap(); }
 
       // Get mouse position
-      var x = event.x || event.clientX || 0;
-      var y = event.y || event.clientY || 0;
+      var position = TheGraph.library.getEventPosition(event);
+
       if (event.touches && event.touches.length) {
-        x = event.touches[0].clientX;
-        y = event.touches[0].clientY;
+        position.x = event.touches[0].clientX;
+        position.y = event.touches[0].clientY;
       }
 
       // App.showContext
       this.showContext({
         element: this,
         type: "main",
-        x: x,
-        y: y,
+        x: position.x,
+        y: position.y,
         graph: this.props.graph,
         itemKey: 'graph',
         item: this.props.graph
