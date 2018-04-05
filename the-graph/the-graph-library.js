@@ -151,8 +151,54 @@ function libraryFromGraph(fbpGraph) {
     return library;
 }
 
+/**
+ * Returns offsets for mouse position.
+ *
+ * This function need to calculate correct offset in case the-graph
+ * used as positioned in not (0, 0) coordinates.
+ *
+ * @param initialElement - event target.
+ * @param upperElement - upper the-graph element (see usages for example).
+ * @returns {{top: number, left: number}}
+ */
+function getOffsetUpToElement(initialElement, upperElement) {
+  var offset = {top: 0, left: 0};
+  var offsetParent = initialElement;
+
+  while (offsetParent != null && offsetParent != upperElement) {
+    offset.left += offsetParent.offsetLeft || 0;
+    offset.top  += offsetParent.offsetTop || 0;
+    offsetParent = offsetParent.parentElement;
+  }
+
+  return offset;
+}
+
+
+/**
+ * Returns the position {y: Y, x: X} where the provided event was triggered.
+ *
+ * @param event - event triggered from the UI.
+ * @returns {{y: number, x: number}}
+ */
+function getEventPosition(event) {
+  var offset = getOffsetUpToElement(event.currentTarget, event.target);
+
+  // The offset should be applied only to clientX/Y if layerX/Y don't exist.
+  // TODO: Check if there is another way of doing this without using layerX/Y.
+  // The use of clientX/Y works in most cases except when there is margin/padding in parent elements
+  // That affects the value of `offset`.
+  return {
+    y: event.layerY || (event.clientY - offset.top) || 0,
+    x: event.layerX || (event.clientX - offset.left) || 0
+  };
+}
+
+
 module.exports = {
   mergeComponentDefinition: mergeComponentDefinition,
   componentsFromGraph: componentsFromGraph,
   libraryFromGraph: libraryFromGraph,
+  getOffsetUpToElement: getOffsetUpToElement,
+  getEventPosition: getEventPosition,
 };

@@ -1,4 +1,5 @@
 var ReactDOM = require('react-dom');
+var getEventPosition = require('./the-graph-library').getEventPosition;
 // React mixins
 
 // Show fake tooltip
@@ -7,11 +8,13 @@ var Tooltip = {
   showTooltip: function (event) {
     if ( !this.shouldShowTooltip() ) { return; }
 
+    // Get mouse position
+    var position = getEventPosition(event);
     var tooltipEvent = new CustomEvent('the-graph-tooltip', { 
       detail: {
         tooltip: this.props.label,
-        x: event.clientX,
-        y: event.clientY
+        x: position.x,
+        y: position.y
       }, 
       bubbles: true
     });

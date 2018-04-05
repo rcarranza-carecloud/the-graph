@@ -189,7 +189,6 @@ function renderGraph(graph, options) {
         graph: graph,
         library: options.library,
     };
-    //console.log('render', props);
 
     var wrapper = document.createElement('div');
     wrapper.className = options.theme;
