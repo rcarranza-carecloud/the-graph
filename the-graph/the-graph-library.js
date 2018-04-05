@@ -186,8 +186,8 @@ function getEventPosition(event) {
 
   // The offset should be applied only to clientX/Y if layerX/Y don't exist.
   // TODO: Check if there is another way of doing this without using layerX/Y.
-  // The use of clientX/Y work in most cases except when there are margin/padding in parent elements
-  // That affect the value of `offset`
+  // The use of clientX/Y works in most cases except when there is margin/padding in parent elements
+  // That affects the value of `offset`.
   return {
     y: event.layerY || (event.clientY - offset.top) || 0,
     x: event.layerX || (event.clientX - offset.left) || 0
