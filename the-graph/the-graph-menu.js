@@ -85,9 +85,17 @@ function createMenuSlice(options) {
   var children = [
     factories.createMenuSliceArcPath(arcPathOptions)
   ];
+  var slice = this.props.menu[direction];
+  // If slice is defined and it's an object the flag will always be true.
+  var shouldShowSlice = !!slice;
 
-  if (this.props.menu[direction]) {
-    var slice = this.props.menu[direction];
+  // For slices with the function `isVisible` the `shouldShowSlice` flag is set based on
+  // the response from the callback.
+  if (shouldShowSlice && typeof slice.isVisible === 'function') {
+      shouldShowSlice = slice.isVisible(this.props.options);
+  }
+
+  if (shouldShowSlice) {
     if (slice.icon) {
       var sliceIconTextOptions = {
         x: config.positions[direction+"IconX"],
@@ -130,13 +138,25 @@ var Menu = React.createFactory( createReactClass({
   displayName: "TheGraphMenu",
   radius: config.radius,
   getInitialState: function() {
+    var initialState = {};
+    var self = this;
+
+    Object.keys(this.props.menu).forEach(
+        function (direction) {
+          var directionObj = self.props.menu[direction];
+          var key = direction + 'tappable';
+
+          // If visibility is set for a given direction, check if the current node should be able to see it.
+          if (!directionObj.isVisible) {
+            initialState[key] = directionObj.action;
+          } else if (directionObj.isVisible(self.props.options)) {
+            initialState[key] = directionObj.action;
+          }
+        }
+    );
+
     // Use these in CSS for cursor and hover, and to attach listeners
-    return {
-      n4tappable: (this.props.menu.n4 && this.props.menu.n4.action),
-      s4tappable: (this.props.menu.s4 && this.props.menu.s4.action),
-      e4tappable: (this.props.menu.e4 && this.props.menu.e4.action),
-      w4tappable: (this.props.menu.w4 && this.props.menu.w4.action),
-    };
+    return initialState;
   },
   onTapN4: function () {
     var options = this.props.options;
