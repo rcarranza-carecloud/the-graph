@@ -143,14 +143,13 @@ var Menu = React.createFactory( createReactClass({
 
     Object.keys(this.props.menu).forEach(
         function (direction) {
-          var directionObj = self.props.menu[direction];
+          var dir = self.props.menu[direction];
           var key = direction + 'tappable';
+          var hasVisibleCallback = dir.isVisible && (typeof dir.isVisible === 'function');
 
-          // If visibility is set for a given direction, check if the current node should be able to see it.
-          if (!directionObj.isVisible) {
-            initialState[key] = directionObj.action;
-          } else if (directionObj.isVisible(self.props.options)) {
-            initialState[key] = directionObj.action;
+          // If `isVisible` is set for a given direction, check if the current node should be able to see it.
+          if (!hasVisibleCallback || dir.isVisible(self.props.options)) {
+            initialState[key] = dir.action;
           }
         }
     );
