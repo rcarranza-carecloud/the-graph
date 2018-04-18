@@ -7,3 +7,6 @@ npm-debug.log
 /spec/temp/
 /coverage
 package-lock.json
+
+# Mac files
+.DS_Store
