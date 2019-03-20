@@ -43,9 +43,6 @@ module.exports.register = function (context) {
     mixins: [
       TooltipMixin
     ],
-    defaultProps: {
-      allowEdgeStart: true,
-    },
     componentDidMount: function () {
       var domNode = ReactDOM.findDOMNode(this);
 
@@ -207,5 +204,8 @@ module.exports.register = function (context) {
     }
   }));
 
+  TheGraph.Port.defaultProps = {
+    allowEdgeStart: true,
+  };
 
 };
