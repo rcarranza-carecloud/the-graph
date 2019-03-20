@@ -10,6 +10,14 @@ You can optionally use [klayjs-noflo](https://github.com/noflo/klayjs-noflo) for
 
 `the-graph` is used as the editor in the [Flowhub IDE](https://flowhub.io).
 
+## Forked Repository
+This repository is a fork of the original repo [flowhub/the-graph](https://github.com/flowhub/the-graph)
+
+It's periodically maintained and updated with the latest changes on the original repository. This
+copy adds a few tweaks to solve some bugs or add some features.
+
+`Last update based on the-graph@v0.13.1`
+
 ## Examples
 
 * Basic demo. [code](./examples/demo-simple.html) |
